@@ -208,32 +208,27 @@ static void sha5xx_process(sha512_ctx *ctx)
 
 static char* u32_hash_to_string(const uint32_t *hash, size_t size)
 {
+  size_t str_index = 0U;
+
+  /* 8 hex characters for every uint32_t and NULL terminator. */
   size_t str_length = size * 8U + 1U;
 
   char *str = malloc(str_length * sizeof *str);
   if (str != NULL)
   {
-    if (size == 7U)
+    int sprintf_res;
+    for (size_t i = 0U; i < size; i++)
     {
-      sprintf(
-        str,
-        "%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32,
-        hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U], hash[6U]
-      );
-    }
-    else if (size == 8U)
-    {
-      sprintf(
-        str,
-        "%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32,
-        hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U], hash[6U], hash[7U]
-      );
-    }
-    else
-    {
-      /* Should never get here. */
-      free(str);
-      str = NULL;
+      sprintf_res = sprintf(&str[str_index], "%.8"PRIx32, hash[i]);
+
+      if (sprintf_res != 8)
+      {
+        free(str);
+        str = NULL;
+        break;
+      }
+
+      str_index += 8U;
     }
   }
 
@@ -242,32 +237,27 @@ static char* u32_hash_to_string(const uint32_t *hash, size_t size)
 
 static char* u64_hash_to_string(const uint64_t *hash, size_t size)
 {
+  size_t str_index = 0U;
+
+  /* 16 hex characters for every uint64_t and NULL terminator. */
   size_t str_length = size * 16U + 1U;
 
   char *str = malloc(str_length * sizeof *str);
   if (str != NULL)
   {
-    if (size == 6U)
+    int sprintf_res;
+    for (size_t i = 0U; i < size; i++)
     {
-      sprintf(
-        str,
-        "%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64,
-        hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U]
-      );
-    }
-    else if (size == 8U)
-    {
-      sprintf(
-        str,
-        "%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64,
-        hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U], hash[6U], hash[7U]
-      );
-    }
-    else
-    {
-      /* Should never get here. */
-      free(str);
-      str = NULL;
+      sprintf_res = sprintf(&str[str_index], "%.16"PRIx64, hash[i]);
+
+      if (sprintf_res != 16)
+      {
+        free(str);
+        str = NULL;
+        break;
+      }
+
+      str_index += 16U;
     }
   }
 
