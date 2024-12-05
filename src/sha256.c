@@ -355,6 +355,58 @@ char* sha256_to_string(const uint32_t hash[static 8U])
   return str;
 }
 
+void sha384(const uint8_t *data, size_t size, uint64_t result[static 6U])
+{
+  sha384_ctx ctx;
+  sha384_init(&ctx);
+  sha384_feed(&ctx, data, size);
+  sha384_finalize(&ctx, result);
+}
+
+void sha384_init(sha384_ctx *ctx)
+{
+  ctx->msg_len = 0U;
+  ctx->chunk_idx = 0U;
+
+  ctx->h[0U] = 0xcbbb9d5dc1059ed8ULL;
+  ctx->h[1U] = 0x629a292a367cd507ULL;
+  ctx->h[2U] = 0x9159015a3070dd17ULL;
+  ctx->h[3U] = 0x152fecd8f70e5939ULL;
+  ctx->h[4U] = 0x67332667ffc00b31ULL;
+  ctx->h[5U] = 0x8eb44a8768581511ULL;
+  ctx->h[6U] = 0xdb0c2e0d64f98fa7ULL;
+  ctx->h[7U] = 0x47b5481dbefa4fa4ULL;
+}
+
+void sha384_feed(sha384_ctx *ctx, const uint8_t *data, size_t size)
+{
+  sha512_feed(ctx, data, size);
+}
+
+void sha384_finalize(sha384_ctx *ctx, uint64_t result[static 6U])
+{
+  uint64_t hash[8U];
+  sha512_finalize(ctx, hash);
+  memcpy(result, hash, 6U * sizeof *result);
+}
+
+char* sha384_to_string(const uint64_t hash[static 6U])
+{
+  // 16 characters per uint64_t plus NULL terminator
+  size_t str_length = 16U * 6U + 1U;
+
+  char *str = malloc(str_length * sizeof *str);
+  if (str != NULL)
+  {
+    sprintf(
+      str,
+      "%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64"%.16"PRIx64,
+      hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U]
+    );
+  }
+
+  return str;
+}
 
 void sha512(const uint8_t *data, size_t size, uint64_t result[static 8U])
 {

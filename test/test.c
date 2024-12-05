@@ -67,6 +67,18 @@ static void run_sha256_tests(struct test_data *test_data, size_t number_of_tests
   puts("OK");
 }
 
+static void run_sha384_tests(struct test_data *test_data, size_t number_of_tests, const char *test_name)
+{
+  printf("%s...", test_name);
+  for (size_t i = 0; i < number_of_tests; i++)
+  {
+    SHAXXX_TEST(test_data[i], uint64_t, sha384, sha384_to_string);
+    SHAXXX_INIT_FEED_FINALIZE_TEST(test_data[i], sha384_ctx, uint64_t, sha384_init, sha384_feed, sha384_finalize, sha384_to_string);
+    SHAXXX_SEGMENTED_TEST(test_data[i], sha384_ctx, uint64_t, sha384_init, sha384_feed, sha384_finalize, sha384_to_string);
+  }
+  puts("OK");
+}
+
 static void run_sha512_tests(struct test_data *test_data, size_t number_of_tests, const char *test_name)
 {
   printf("%s...", test_name);
@@ -98,6 +110,14 @@ int main(void)
 
   test_data = load_test_file("test/nist_test_vectors/SHA256LongMsg.rsp", &number_of_tests);
   run_sha256_tests(test_data, number_of_tests, "SHA256 long");
+  free_test_data(test_data, number_of_tests);
+
+  test_data = load_test_file("test/nist_test_vectors/SHA384ShortMsg.rsp", &number_of_tests);
+  run_sha384_tests(test_data, number_of_tests, "SHA384 short");
+  free_test_data(test_data, number_of_tests);
+
+  test_data = load_test_file("test/nist_test_vectors/SHA384LongMsg.rsp", &number_of_tests);
+  run_sha384_tests(test_data, number_of_tests, "SHA384 long");
   free_test_data(test_data, number_of_tests);
 
   test_data = load_test_file("test/nist_test_vectors/SHA512ShortMsg.rsp", &number_of_tests);

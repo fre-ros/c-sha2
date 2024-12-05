@@ -12,6 +12,8 @@ typedef struct {
   uint8_t chunk[64U];
 } sha256_ctx;
 
+typedef sha256_ctx sha224_ctx;
+
 typedef struct {
   size_t msg_len;
   size_t chunk_idx;
@@ -19,7 +21,7 @@ typedef struct {
   uint8_t chunk[128U];
 } sha512_ctx;
 
-typedef sha256_ctx sha224_ctx;
+typedef sha512_ctx sha384_ctx;
 
 extern void sha224(const uint8_t *data, size_t size, uint32_t result[static 7U]);
 extern void sha224_init(sha224_ctx *ctx);
@@ -74,6 +76,12 @@ extern void sha256_finalize(sha256_ctx *ctx, uint32_t result[static 8U]);
  * @return     String representation of the hash or NULL if the allocation failed.
  */
 extern char* sha256_to_string(const uint32_t hash[static 8U]);
+
+extern void sha384(const uint8_t *data, size_t size, uint64_t result[static 6U]);
+extern void sha384_init(sha384_ctx *ctx);
+extern void sha384_feed(sha384_ctx *ctx, const uint8_t *data, size_t size);
+extern void sha384_finalize(sha384_ctx *ctx, uint64_t result[static 6U]);
+extern char* sha384_to_string(const uint64_t hash[static 6U]);
 
 extern void sha512(const uint8_t *data, size_t size, uint64_t result[static 8U]);
 extern void sha512_init(sha512_ctx *ctx);
