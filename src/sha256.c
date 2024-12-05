@@ -539,13 +539,13 @@ void sha512_224_finalize(sha512_224_ctx *ctx, uint32_t result[static 7U])
   uint64_t hash[8U];
   sha512_finalize(ctx, hash);
 
-  result[0U] = (hash[0U] >> 32U);
-  result[1U] = (hash[0U] &  0xFFFFFFFFU);
-  result[2U] = (hash[1U] >> 32U);
-  result[3U] = (hash[1U] &  0xFFFFFFFFU);
-  result[4U] = (hash[2U] >> 32U);
-  result[5U] = (hash[2U] &  0xFFFFFFFFU);
-  result[6U] = (hash[3U] >> 32U);
+  result[0U] = (uint32_t)(hash[0U] >> 32U);
+  result[1U] = (uint32_t)(hash[0U] &  0xFFFFFFFFU);
+  result[2U] = (uint32_t)(hash[1U] >> 32U);
+  result[3U] = (uint32_t)(hash[1U] &  0xFFFFFFFFU);
+  result[4U] = (uint32_t)(hash[2U] >> 32U);
+  result[5U] = (uint32_t)(hash[2U] &  0xFFFFFFFFU);
+  result[6U] = (uint32_t)(hash[3U] >> 32U);
 }
 
 char* sha512_224_to_string(const uint32_t hash[static 7U])
@@ -560,6 +560,67 @@ char* sha512_224_to_string(const uint32_t hash[static 7U])
       str,
       "%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32,
       hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U], hash[6U]
+    );
+  }
+
+  return str;
+}
+
+void sha512_256(const uint8_t *data, size_t size, uint32_t result[static 8U])
+{
+  sha512_256_ctx ctx;
+  sha512_256_init(&ctx);
+  sha512_256_feed(&ctx, data, size);
+  sha512_256_finalize(&ctx, result);
+}
+
+void sha512_256_init(sha512_256_ctx *ctx)
+{
+  ctx->msg_len = 0U;
+  ctx->chunk_idx = 0U;
+
+  ctx->h[0U] = 0x22312194fc2bf72cULL;
+  ctx->h[1U] = 0x9f555fa3c84c64c2ULL;
+  ctx->h[2U] = 0x2393b86b6f53b151ULL;
+  ctx->h[3U] = 0x963877195940eabdULL;
+  ctx->h[4U] = 0x96283ee2a88effe3ULL;
+  ctx->h[5U] = 0xbe5e1e2553863992ULL;
+  ctx->h[6U] = 0x2b0199fc2c85b8aaULL;
+  ctx->h[7U] = 0x0eb72ddC81c52ca2ULL;
+}
+
+void sha512_256_feed(sha512_256_ctx *ctx, const uint8_t *data, size_t size)
+{
+  sha512_feed(ctx, data, size);
+}
+
+void sha512_256_finalize(sha512_256_ctx *ctx, uint32_t result[static 8U])
+{
+  uint64_t hash[8U];
+  sha512_finalize(ctx, hash);
+
+  result[0U] = (uint32_t)(hash[0U] >> 32U);
+  result[1U] = (uint32_t)(hash[0U] &  0xFFFFFFFFU);
+  result[2U] = (uint32_t)(hash[1U] >> 32U);
+  result[3U] = (uint32_t)(hash[1U] &  0xFFFFFFFFU);
+  result[4U] = (uint32_t)(hash[2U] >> 32U);
+  result[5U] = (uint32_t)(hash[2U] &  0xFFFFFFFFU);
+  result[6U] = (uint32_t)(hash[3U] >> 32U);
+  result[7U] = (uint32_t)(hash[3U] &  0xFFFFFFFFU);
+}
+
+char* sha512_256_to_string(const uint32_t hash[static 8U])
+{
+  // 8 characters per uint32_t plus NULL terminator
+  size_t str_length = 8U * 8U + 1U;
+
+  char *str = malloc(str_length * sizeof *str);
+  if (str != NULL)
+  {
+    sprintf(
+      str,
+      "%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32,
+      hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U], hash[6U], hash[7U]
     );
   }
 
