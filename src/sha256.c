@@ -33,7 +33,7 @@ static const uint32_t k[64U] = {
   0x90befffaU, 0xa4506cebU, 0xbef9a3f7U, 0xc67178f2U
 };
 
-static void sha256_process(struct sha256_ctx *ctx)
+static void sha2xx_process(sha256_ctx *ctx)
 {
   uint32_t w[64U] =
   {
@@ -102,7 +102,70 @@ static void sha256_process(struct sha256_ctx *ctx)
   ctx->chunk_idx = 0U;
 }
 
-void sha256_init(struct sha256_ctx *ctx)
+void sha224_init(sha224_ctx *ctx)
+{
+  ctx->msg_len = 0U;
+  ctx->chunk_idx = 0U;
+
+  ctx->h[0U] = 0xc1059ed8U;
+  ctx->h[1U] = 0x367cd507U;
+  ctx->h[2U] = 0x3070dd17U;
+  ctx->h[3U] = 0xf70e5939U;
+  ctx->h[4U] = 0xffc00b31U;
+  ctx->h[5U] = 0x68581511U;
+  ctx->h[6U] = 0x64f98fa7U;
+  ctx->h[7U] = 0xbefa4fa4U;
+}
+
+void sha224_feed(sha224_ctx *ctx, const uint8_t *data, size_t size)
+{
+  sha256_feed(ctx, data, size);
+}
+
+void sha224_finalize(sha224_ctx *ctx, uint32_t result[static 7U])
+{
+  uint32_t hash[8U];
+  sha256_finalize(ctx, hash);
+  memcpy(result, hash, 7U * sizeof *result);
+}
+
+char* sha224_to_string(const uint32_t hash[static 7U])
+{
+  // 7 characters per uint32_t plus NULL terminator
+  size_t str_length = 7U * 8U + 1U;
+
+  char *str = malloc(str_length * sizeof *str);
+  if (str != NULL)
+  {
+    sprintf(
+      str,
+      "%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32,
+      hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U], hash[6U]
+    );
+  }
+
+  return str;
+}
+
+void sha224(const uint8_t *data, size_t size, uint32_t result[static 7U])
+{
+  sha224_ctx ctx;
+
+  sha224_init(&ctx);
+  sha224_feed(&ctx, data, size);
+  sha224_finalize(&ctx, result);
+}
+
+void sha256(const uint8_t *data, size_t size, uint32_t result[static 8U])
+{
+  sha256_ctx ctx;
+
+  sha256_init(&ctx);
+  sha256_feed(&ctx, data, size);
+  sha256_finalize(&ctx, result);
+}
+
+void sha256_init(sha256_ctx *ctx)
 {
   ctx->msg_len = 0U;
   ctx->chunk_idx = 0U;
@@ -117,7 +180,7 @@ void sha256_init(struct sha256_ctx *ctx)
   ctx->h[7U] = 0x5be0cd19U;
 }
 
-void sha256_feed(struct sha256_ctx *ctx, const uint8_t *data, size_t size)
+void sha256_feed(sha256_ctx *ctx, const uint8_t *data, size_t size)
 {
   uint32_t len_to_add;
   uint32_t data_idx = 0U;
@@ -134,12 +197,12 @@ void sha256_feed(struct sha256_ctx *ctx, const uint8_t *data, size_t size)
 
     if (ctx->chunk_idx == 64U)
     {
-      sha256_process(ctx);
+      sha2xx_process(ctx);
     }
   }
 }
 
-void sha256_finalize(struct sha256_ctx *ctx, uint32_t result[static 8U])
+void sha256_finalize(sha256_ctx *ctx, uint32_t result[static 8U])
 {
   uint64_t data_bit_length = ctx->msg_len * 8U;
   uint8_t data_bit_length_be_bytes[8U] =
@@ -171,15 +234,6 @@ void sha256_finalize(struct sha256_ctx *ctx, uint32_t result[static 8U])
   result[5U] = ctx->h[5U];
   result[6U] = ctx->h[6U];
   result[7U] = ctx->h[7U];
-}
-
-void sha256(const uint8_t *data, size_t size, uint32_t result[static 8U])
-{
-  struct sha256_ctx ctx;
-
-  sha256_init(&ctx);
-  sha256_feed(&ctx, data, size);
-  sha256_finalize(&ctx, result);
 }
 
 char* sha256_to_string(const uint32_t hash[static 8U])

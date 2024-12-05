@@ -38,7 +38,7 @@ int main(void)
   const char *msg_part_one = "The quick brown fox ";
   const char *msg_part_two = "jumps over the lazy dog.";
 
-  struct sha256_ctx ctx;
+  sha256_ctx ctx;
   sha256_init(&ctx);
   sha256_feed(&ctx, (uint8_t*)msg_part_one, strlen(msg_part_one));
   sha256_feed(&ctx, (uint8_t*)msg_part_two, strlen(msg_part_two));
@@ -110,7 +110,7 @@ extern char* sha256_to_string(const uint32_t hash[static 8U]);
 The tests are run by calling make.
 <br>The implementation and test files are analyzed with [cppcheck](https://github.com/danmar/cppcheck) before compiling.
 
-```console
+```shell
 $ make
 SHA256 short...OK
 SHA256 long...OK

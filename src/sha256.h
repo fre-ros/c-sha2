@@ -5,12 +5,20 @@
 #include <stddef.h>
 
 /** Context struct for a 256 hash calculation. */
-struct sha256_ctx {
+typedef struct {
   size_t msg_len;
   size_t chunk_idx;
   uint32_t h[8U];
   uint8_t chunk[64U];
-};
+} sha256_ctx;
+
+typedef sha256_ctx sha224_ctx;
+
+extern void sha224(const uint8_t *data, size_t size, uint32_t result[static 7U]);
+extern void sha224_init(sha224_ctx *ctx);
+extern void sha224_feed(sha224_ctx *ctx, const uint8_t *data, size_t size);
+extern void sha224_finalize(sha224_ctx *ctx, uint32_t result[static 7U]);
+extern char* sha224_to_string(const uint32_t hash[static 7U]);
 
 /**
  * Calculate SHA256.
@@ -28,7 +36,7 @@ extern void sha256(const uint8_t *data, size_t size, uint32_t result[static 8U])
  *
  * @param[in] ctx  The hash context
  */
-extern void sha256_init(struct sha256_ctx *ctx);
+extern void sha256_init(sha256_ctx *ctx);
 
 /**
  * Feed data to the SHA256 calculation.
@@ -37,7 +45,7 @@ extern void sha256_init(struct sha256_ctx *ctx);
  * @param[in]  data  Data to feed
  * @param[in]  size  Size of the data
  */
-extern void sha256_feed(struct sha256_ctx *ctx, const uint8_t *data, size_t size);
+extern void sha256_feed(sha256_ctx *ctx, const uint8_t *data, size_t size);
 
 /**
  * Finalize the SHA256 calculation.
@@ -47,7 +55,7 @@ extern void sha256_feed(struct sha256_ctx *ctx, const uint8_t *data, size_t size
  * @param[in]   ctx     The hash context
  * @param[out]  result  Hash result out array
  */
-extern void sha256_finalize(struct sha256_ctx *ctx, uint32_t result[static 8U]);
+extern void sha256_finalize(sha256_ctx *ctx, uint32_t result[static 8U]);
 
 /**
  * Create a hex string representation of the hash.
