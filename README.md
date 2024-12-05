@@ -2,7 +2,7 @@
 
 [SHA2](https://en.wikipedia.org/wiki/SHA-2) library for C
 
-- Supports SHA224, SHA256, SHA384, SHA512, SHA512/224 and SHA512/256
+- Supports **SHA224**, **SHA256**, **SHA384**, **SHA512**, **SHA512/224** and **SHA512/256**
 - Supports direct calculation and streaming protocol
 - Requires C99 or newer
 - Implementation verified against [NIST CAVP](https://csrc.nist.gov/Projects/Cryptographic-Algorithm-Validation-Program/Secure-Hashing) test vectors
@@ -36,7 +36,7 @@ int main(void)
   sha256((uint8_t*)msg, strlen(msg), hash);
   print_hash(hash);
 
-  // Calculate hash in chunks
+  // Calculate hash with streaming protocol
   const char *msg_part_one = "The quick brown fox ";
   const char *msg_part_two = "jumps over the lazy dog.";
 
@@ -49,15 +49,14 @@ int main(void)
 
   return 0;
 }
+
+// Output:
+//  ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c
+//  ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c
 ```
 
-Output:
-```
-ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c
-ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c
-```
 ## API
-The strings returned from xxx_to_string functions has to be freed by the caller.
+The strings returned from **xxx_to_string** functions must be freed by the caller.
 ```c
 /*************************
  *        SHA224
