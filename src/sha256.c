@@ -24,6 +24,8 @@
                                ((uint64_t)arr[i+6U] << 8U)  | \
                                ((uint64_t)arr[i+7U] << 0U))
 
+static const uint8_t zero_padding[128U] = {0U};
+
 static const uint32_t k2xx[64U] = {
   0x428a2f98U, 0x71374491U, 0xb5c0fbcfU, 0xe9b5dba5U,
   0x3956c25bU, 0x59f111f1U, 0x923f82a4U, 0xab1c5ed5U,
@@ -376,7 +378,6 @@ void sha256_finalize(sha256_ctx *ctx, uint32_t result[static 8U])
   uint8_t one_bit_padding = 0x80U;
   sha256_feed(ctx, &one_bit_padding, 1U);
 
-  uint8_t zero_padding[64U] = {0U};
   size_t padding_length = (ctx->chunk_idx > 56U) ? (56U + 64U - ctx->chunk_idx) : (56U - ctx->chunk_idx);
   sha256_feed(ctx, zero_padding, padding_length);
 
@@ -501,7 +502,6 @@ void sha512_finalize(sha512_ctx *ctx, uint64_t result[static 8U])
   uint8_t one_bit_padding = 0x80U;
   sha512_feed(ctx, &one_bit_padding, 1U);
 
-  uint8_t zero_padding[128U] = {0U};
   size_t padding_length = (ctx->chunk_idx > 112U) ? (112U + 128U - ctx->chunk_idx) : (112U - ctx->chunk_idx);
   sha512_feed(ctx, zero_padding, padding_length);
 
