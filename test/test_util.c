@@ -80,7 +80,7 @@ static void load_test_case(struct test_data *test_data, FILE *f)
   // Read hash line
   assert(fgets(line_buffer, sizeof line_buffer, f) != NULL);
   line_buffer[strcspn(line_buffer, "\r\n")] = 0;
-  assert(sscanf(line_buffer, "MD = %64s", test_data->expected_hash) == 1);
+  assert(sscanf(line_buffer, "MD = %128s", test_data->expected_hash) == 1);
 
   // Consume empty line
   assert(fgets(line_buffer, sizeof line_buffer, f) != NULL);

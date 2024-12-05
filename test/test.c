@@ -67,26 +67,46 @@ static void run_sha256_tests(struct test_data *test_data, size_t number_of_tests
   puts("OK");
 }
 
+static void run_sha512_tests(struct test_data *test_data, size_t number_of_tests, const char *test_name)
+{
+  printf("%s...", test_name);
+  for (size_t i = 0; i < number_of_tests; i++)
+  {
+    SHAXXX_TEST(test_data[i], uint64_t, sha512, sha512_to_string);
+    SHAXXX_INIT_FEED_FINALIZE_TEST(test_data[i], sha512_ctx, uint64_t, sha512_init, sha512_feed, sha512_finalize, sha512_to_string);
+    SHAXXX_SEGMENTED_TEST(test_data[i], sha512_ctx, uint64_t, sha512_init, sha512_feed, sha512_finalize, sha512_to_string);
+  }
+  puts("OK");
+}
+
 int main(void)
 {
   size_t number_of_tests;
-  struct test_data *sha256_test_data;
+  struct test_data *test_data;
 
-  sha256_test_data = load_test_file("test/nist_test_vectors/SHA224ShortMsg.rsp", &number_of_tests);
-  run_sha224_tests(sha256_test_data, number_of_tests, "SHA224 short");
-  free_test_data(sha256_test_data, number_of_tests);
+  test_data = load_test_file("test/nist_test_vectors/SHA224ShortMsg.rsp", &number_of_tests);
+  run_sha224_tests(test_data, number_of_tests, "SHA224 short");
+  free_test_data(test_data, number_of_tests);
 
-  sha256_test_data = load_test_file("test/nist_test_vectors/SHA224LongMsg.rsp", &number_of_tests);
-  run_sha224_tests(sha256_test_data, number_of_tests, "SHA224 long");
-  free_test_data(sha256_test_data, number_of_tests);
+  test_data = load_test_file("test/nist_test_vectors/SHA224LongMsg.rsp", &number_of_tests);
+  run_sha224_tests(test_data, number_of_tests, "SHA224 long");
+  free_test_data(test_data, number_of_tests);
 
-  sha256_test_data = load_test_file("test/nist_test_vectors/SHA256ShortMsg.rsp", &number_of_tests);
-  run_sha256_tests(sha256_test_data, number_of_tests, "SHA256 short");
-  free_test_data(sha256_test_data, number_of_tests);
+  test_data = load_test_file("test/nist_test_vectors/SHA256ShortMsg.rsp", &number_of_tests);
+  run_sha256_tests(test_data, number_of_tests, "SHA256 short");
+  free_test_data(test_data, number_of_tests);
 
-  sha256_test_data = load_test_file("test/nist_test_vectors/SHA256LongMsg.rsp", &number_of_tests);
-  run_sha256_tests(sha256_test_data, number_of_tests, "SHA256 long");
-  free_test_data(sha256_test_data, number_of_tests);
+  test_data = load_test_file("test/nist_test_vectors/SHA256LongMsg.rsp", &number_of_tests);
+  run_sha256_tests(test_data, number_of_tests, "SHA256 long");
+  free_test_data(test_data, number_of_tests);
+
+  test_data = load_test_file("test/nist_test_vectors/SHA512ShortMsg.rsp", &number_of_tests);
+  run_sha512_tests(test_data, number_of_tests, "SHA512 short");
+  free_test_data(test_data, number_of_tests);
+
+  test_data = load_test_file("test/nist_test_vectors/SHA512LongMsg.rsp", &number_of_tests);
+  run_sha512_tests(test_data, number_of_tests, "SHA512 long");
+  free_test_data(test_data, number_of_tests);
 
   return 0;
 }

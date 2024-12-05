@@ -7,7 +7,7 @@ struct test_data
 {
   uint8_t *msg;
   size_t msg_length;
-  char expected_hash[65];
+  char expected_hash[129];
 };
 
 extern struct test_data* load_test_file(const char *filepath, size_t *number_of_tests);
