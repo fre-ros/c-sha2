@@ -14,7 +14,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "sha256.h"
+#include "sha2.h"
 
 static void print_hash(const uint32_t hash[8])
 {
