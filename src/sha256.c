@@ -283,18 +283,18 @@ void sha256_init(sha256_ctx *ctx)
 
 void sha256_feed(sha256_ctx *ctx, const uint8_t *data, size_t size)
 {
-  uint32_t len_to_add;
+  uint32_t length_to_feed;
   uint32_t data_idx = 0U;
 
   while (size > 0U)
   {
-    len_to_add = MIN(size, 64U - ctx->chunk_idx);
-    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], len_to_add);
+    length_to_feed = MIN(size, 64U - ctx->chunk_idx);
+    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], length_to_feed);
 
-    size -= len_to_add;
-    data_idx += len_to_add;
-    ctx->msg_len += len_to_add;
-    ctx->chunk_idx += len_to_add;
+    size -= length_to_feed;
+    data_idx += length_to_feed;
+    ctx->msg_len += length_to_feed;
+    ctx->chunk_idx += length_to_feed;
 
     if (ctx->chunk_idx == 64U)
     {
@@ -433,18 +433,18 @@ void sha512_init(sha512_ctx *ctx)
 
 void sha512_feed(sha512_ctx *ctx, const uint8_t *data, size_t size)
 {
-  uint32_t len_to_add;
+  uint32_t length_to_feed;
   uint32_t data_idx = 0U;
 
   while (size > 0U)
   {
-    len_to_add = MIN(size, 128U - ctx->chunk_idx);
-    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], len_to_add);
+    length_to_feed = MIN(size, 128U - ctx->chunk_idx);
+    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], length_to_feed);
 
-    size -= len_to_add;
-    data_idx += len_to_add;
-    ctx->msg_len += len_to_add;
-    ctx->chunk_idx += len_to_add;
+    size -= length_to_feed;
+    data_idx += length_to_feed;
+    ctx->msg_len += length_to_feed;
+    ctx->chunk_idx += length_to_feed;
 
     if (ctx->chunk_idx == 128U)
     {

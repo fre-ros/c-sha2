@@ -6,6 +6,7 @@
 
 #include "test_util.h"
 
+/* Guaranteed to hold the longest lines in the test files. */
 #define BUFFER_SIZE            102800
 #define BUFFER_SIZE_SCANF_STR "102799"
 
@@ -39,7 +40,7 @@ static uint8_t hex_nibble_to_u8(char nibble)
 static void convert_msg_hex_string_to_msg_data(struct test_data *test_data, const char *str)
 {
   size_t str_length = strlen(str);
-  size_t msg_data_length = str_length / 2; // Every charater is a HEX nibble
+  size_t msg_data_length = str_length / 2; // Every character is a HEX nibble
 
   assert(str_length % 2 == 0);
 
