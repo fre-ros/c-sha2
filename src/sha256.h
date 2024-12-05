@@ -67,7 +67,7 @@ extern void sha512_finalize(sha512_ctx *ctx, uint64_t result[static 8U]);
 extern char* sha512_to_string(const uint64_t hash[static 8U]);
 
 /*************************
- *        SHA512/224
+ *      SHA512/224
  ************************/
 extern void sha512_224(const uint8_t *data, size_t size, uint32_t result[static 7U]);
 extern void sha512_224_init(sha512_224_ctx *ctx);
@@ -76,7 +76,7 @@ extern void sha512_224_finalize(sha512_224_ctx *ctx, uint32_t result[static 7U])
 extern char* sha512_224_to_string(const uint32_t hash[static 7U]);
 
 /*************************
- *        SHA512/256
+ *      SHA512/256
  ************************/
 extern void sha512_256(const uint8_t *data, size_t size, uint32_t result[static 8U]);
 extern void sha512_256_init(sha512_256_ctx *ctx);
