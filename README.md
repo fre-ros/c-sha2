@@ -1,6 +1,6 @@
 # c-sha2
 
-SHA2 library for C
+[SHA2](https://en.wikipedia.org/wiki/SHA-2) library for C
 
 - Supports SHA224, SHA256, SHA384, SHA512, SHA512/224 and SHA512/256
 - Supports direct calculation and streaming protocol
@@ -57,6 +57,7 @@ ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c
 ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c
 ```
 ## API
+The strings returned from xxx_to_string functions has to be freed by the caller.
 ```c
 /*************************
  *        SHA224
