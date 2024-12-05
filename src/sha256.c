@@ -505,3 +505,63 @@ char* sha512_to_string(const uint64_t hash[static 8U])
 
   return str;
 }
+
+void sha512_224(const uint8_t *data, size_t size, uint32_t result[static 7U])
+{
+  sha512_224_ctx ctx;
+  sha512_224_init(&ctx);
+  sha512_224_feed(&ctx, data, size);
+  sha512_224_finalize(&ctx, result);
+}
+
+void sha512_224_init(sha512_224_ctx *ctx)
+{
+  ctx->msg_len = 0U;
+  ctx->chunk_idx = 0U;
+
+  ctx->h[0U] = 0x8c3d37c819544da2ULL;
+  ctx->h[1U] = 0x73e1996689dcd4d6ULL;
+  ctx->h[2U] = 0x1dfab7ae32ff9c82ULL;
+  ctx->h[3U] = 0x679dd514582f9fcfULL;
+  ctx->h[4U] = 0x0f6d2b697bd44da8ULL;
+  ctx->h[5U] = 0x77e36f7304C48942ULL;
+  ctx->h[6U] = 0x3f9d85a86a1d36C8ULL;
+  ctx->h[7U] = 0x1112e6ad91d692a1ULL;
+}
+
+void sha512_224_feed(sha512_224_ctx *ctx, const uint8_t *data, size_t size)
+{
+  sha512_feed(ctx, data, size);
+}
+
+void sha512_224_finalize(sha512_224_ctx *ctx, uint32_t result[static 7U])
+{
+  uint64_t hash[8U];
+  sha512_finalize(ctx, hash);
+
+  result[0U] = (hash[0U] >> 32U);
+  result[1U] = (hash[0U] &  0xFFFFFFFFU);
+  result[2U] = (hash[1U] >> 32U);
+  result[3U] = (hash[1U] &  0xFFFFFFFFU);
+  result[4U] = (hash[2U] >> 32U);
+  result[5U] = (hash[2U] &  0xFFFFFFFFU);
+  result[6U] = (hash[3U] >> 32U);
+}
+
+char* sha512_224_to_string(const uint32_t hash[static 7U])
+{
+  // 7 characters per uint32_t plus NULL terminator
+  size_t str_length = 7U * 8U + 1U;
+
+  char *str = malloc(str_length * sizeof *str);
+  if (str != NULL)
+  {
+    sprintf(
+      str,
+      "%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32"%.8"PRIx32,
+      hash[0U], hash[1U], hash[2U], hash[3U], hash[4U], hash[5U], hash[6U]
+    );
+  }
+
+  return str;
+}

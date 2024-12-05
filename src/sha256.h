@@ -22,6 +22,7 @@ typedef struct {
 } sha512_ctx;
 
 typedef sha512_ctx sha384_ctx;
+typedef sha512_ctx sha512_224_ctx;
 
 extern void sha224(const uint8_t *data, size_t size, uint32_t result[static 7U]);
 extern void sha224_init(sha224_ctx *ctx);
@@ -88,5 +89,11 @@ extern void sha512_init(sha512_ctx *ctx);
 extern void sha512_feed(sha512_ctx *ctx, const uint8_t *data, size_t size);
 extern void sha512_finalize(sha512_ctx *ctx, uint64_t result[static 8U]);
 extern char* sha512_to_string(const uint64_t hash[static 8U]);
+
+extern void sha512_224(const uint8_t *data, size_t size, uint32_t result[static 7U]);
+extern void sha512_224_init(sha512_224_ctx *ctx);
+extern void sha512_224_feed(sha512_224_ctx *ctx, const uint8_t *data, size_t size);
+extern void sha512_224_finalize(sha512_224_ctx *ctx, uint32_t result[static 7U]);
+extern char* sha512_224_to_string(const uint32_t hash[static 7U]);
 
 #endif /* SHA256_H_ */
