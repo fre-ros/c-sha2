@@ -10,5 +10,5 @@ all:
 ifeq ($(CPPCHECK), 1)
 	@cppcheck --std=c99 -q --max-ctu-depth=4 src/ test/
 endif
-	@gcc -std=c99 -Wall -Wextra -Werror -Wpedantic $(EXTRA_TEST_FLAGS) -Isrc src/sha256.c test/test_util.c test/test.c -o test/run_tests
+	@gcc -std=c99 -Wall -Wextra -Werror -Wpedantic $(EXTRA_TEST_FLAGS) -Isrc src/sha2.c test/test_util.c test/test.c -o test/run_tests
 	@test/run_tests

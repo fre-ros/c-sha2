@@ -1,5 +1,5 @@
-#ifndef SHA256_H_
-#define SHA256_H_
+#ifndef SHA2_H_
+#define SHA2_H_
 
 #include <stdint.h>
 #include <stddef.h>
@@ -84,4 +84,4 @@ extern void sha512_256_feed(sha512_256_ctx *ctx, const uint8_t *data, size_t siz
 extern void sha512_256_finalize(sha512_256_ctx *ctx, uint32_t result[static 8U]);
 extern char* sha512_256_to_string(const uint32_t hash[static 8U]);
 
-#endif /* SHA256_H_ */
+#endif /* SHA2_H_ */

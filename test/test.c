@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "sha256.h"
+#include "sha2.h"
 #include "test_util.h"
 
 #define SHAXXX_TEST(test, hash_type, hash_func, to_string_func) do \
