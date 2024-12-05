@@ -333,6 +333,8 @@ void sha256_feed(sha256_ctx *ctx, const uint8_t *data, size_t size)
   uint32_t length_to_feed;
   uint32_t data_idx = 0U;
 
+  ctx->msg_len += size;
+
   while (size > 0U)
   {
     length_to_feed = MIN(size, 64U - ctx->chunk_idx);
@@ -340,7 +342,6 @@ void sha256_feed(sha256_ctx *ctx, const uint8_t *data, size_t size)
 
     size -= length_to_feed;
     data_idx += length_to_feed;
-    ctx->msg_len += length_to_feed;
     ctx->chunk_idx += length_to_feed;
 
     if (ctx->chunk_idx == 64U)
@@ -456,6 +457,8 @@ void sha512_feed(sha512_ctx *ctx, const uint8_t *data, size_t size)
   uint32_t length_to_feed;
   uint32_t data_idx = 0U;
 
+  ctx->msg_len += size;
+
   while (size > 0U)
   {
     length_to_feed = MIN(size, 128U - ctx->chunk_idx);
@@ -463,7 +466,6 @@ void sha512_feed(sha512_ctx *ctx, const uint8_t *data, size_t size)
 
     size -= length_to_feed;
     data_idx += length_to_feed;
-    ctx->msg_len += length_to_feed;
     ctx->chunk_idx += length_to_feed;
 
     if (ctx->chunk_idx == 128U)
