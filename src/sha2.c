@@ -1,9 +1,7 @@
 #include "sha2.h"
 
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <inttypes.h>
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
@@ -228,6 +226,24 @@ static void sha5xx_process(sha512_ctx *ctx)
   ctx->chunk_idx = 0U;
 }
 
+static char nibble_to_hex_char(uint8_t nibble)
+{
+  switch (nibble)
+  {
+    case 0x0: return '0'; case 0x1: return '1';
+    case 0x2: return '2'; case 0x3: return '3';
+    case 0x4: return '4'; case 0x5: return '5';
+    case 0x6: return '6'; case 0x7: return '7';
+    case 0x8: return '8'; case 0x9: return '9';
+    case 0xa: return 'a'; case 0xb: return 'b';
+    case 0xc: return 'c'; case 0xd: return 'd';
+    case 0xe: return 'e'; case 0xf: return 'f';
+  }
+
+  // Should never get here as long as the caller only passes a nibble.
+  return '0';
+}
+
 static char* hash_to_string(const uint8_t *hash, size_t size)
 {
   size_t str_index = 0U;
@@ -238,20 +254,13 @@ static char* hash_to_string(const uint8_t *hash, size_t size)
   char *str = malloc(str_length * sizeof *str);
   if (str != NULL)
   {
-    int sprintf_res;
     for (size_t i = 0U; i < size; i++)
     {
-      sprintf_res = sprintf(&str[str_index], "%.2"PRIx8, hash[i]);
-
-      if (sprintf_res != 2)
-      {
-        free(str);
-        str = NULL;
-        break;
-      }
-
-      str_index += 2U;
+      str[str_index++] = nibble_to_hex_char(hash[i] >> 4U);
+      str[str_index++] = nibble_to_hex_char(hash[i] & 0xFU);
     }
+
+    str[str_index] = '\0';
   }
 
   return str;
