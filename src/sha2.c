@@ -284,9 +284,9 @@ void sha224_init(sha224_ctx *ctx)
   ctx->h[7U] = 0xbefa4fa4U;
 }
 
-void sha224_feed(sha224_ctx *ctx, const uint8_t *data, size_t size)
+void sha224_process(sha224_ctx *ctx, const uint8_t *data, size_t size)
 {
-  sha256_feed(ctx, data, size);
+  sha256_process(ctx, data, size);
 }
 
 void sha224_finalize(sha224_ctx *ctx, uint8_t result[static 28U])
@@ -306,7 +306,7 @@ void sha224(const uint8_t *data, size_t size, uint8_t result[static 28U])
   sha224_ctx ctx;
 
   sha224_init(&ctx);
-  sha224_feed(&ctx, data, size);
+  sha224_process(&ctx, data, size);
   sha224_finalize(&ctx, result);
 }
 
@@ -317,7 +317,7 @@ void sha256(const uint8_t *data, size_t size, uint8_t result[static 32U])
 {
   sha256_ctx ctx;
   sha256_init(&ctx);
-  sha256_feed(&ctx, data, size);
+  sha256_process(&ctx, data, size);
   sha256_finalize(&ctx, result);
 }
 
@@ -336,21 +336,21 @@ void sha256_init(sha256_ctx *ctx)
   ctx->h[7U] = 0x5be0cd19U;
 }
 
-void sha256_feed(sha256_ctx *ctx, const uint8_t *data, size_t size)
+void sha256_process(sha256_ctx *ctx, const uint8_t *data, size_t size)
 {
-  uint32_t length_to_feed;
+  uint32_t length_to_process;
   uint32_t data_idx = 0U;
 
   ctx->msg_len += size;
 
   while (size > 0U)
   {
-    length_to_feed = MIN(size, 64U - ctx->chunk_idx);
-    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], length_to_feed);
+    length_to_process = MIN(size, 64U - ctx->chunk_idx);
+    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], length_to_process);
 
-    size -= length_to_feed;
-    data_idx += length_to_feed;
-    ctx->chunk_idx += length_to_feed;
+    size -= length_to_process;
+    data_idx += length_to_process;
+    ctx->chunk_idx += length_to_process;
 
     if (ctx->chunk_idx == 64U)
     {
@@ -375,12 +375,12 @@ void sha256_finalize(sha256_ctx *ctx, uint8_t result[static 32U])
   };
 
   uint8_t one_bit_padding = 0x80U;
-  sha256_feed(ctx, &one_bit_padding, 1U);
+  sha256_process(ctx, &one_bit_padding, 1U);
 
   size_t padding_length = (ctx->chunk_idx > 56U) ? (56U + 64U - ctx->chunk_idx) : (56U - ctx->chunk_idx);
-  sha256_feed(ctx, zero_padding, padding_length);
+  sha256_process(ctx, zero_padding, padding_length);
 
-  sha256_feed(ctx, data_bit_length_be_bytes, sizeof data_bit_length_be_bytes);
+  sha256_process(ctx, data_bit_length_be_bytes, sizeof data_bit_length_be_bytes);
 
   PACK_U32_BE(result, 0U, ctx->h[0U]);
   PACK_U32_BE(result, 4U, ctx->h[1U]);
@@ -404,7 +404,7 @@ void sha384(const uint8_t *data, size_t size, uint8_t result[static 48U])
 {
   sha384_ctx ctx;
   sha384_init(&ctx);
-  sha384_feed(&ctx, data, size);
+  sha384_process(&ctx, data, size);
   sha384_finalize(&ctx, result);
 }
 
@@ -423,9 +423,9 @@ void sha384_init(sha384_ctx *ctx)
   ctx->h[7U] = 0x47b5481dbefa4fa4ULL;
 }
 
-void sha384_feed(sha384_ctx *ctx, const uint8_t *data, size_t size)
+void sha384_process(sha384_ctx *ctx, const uint8_t *data, size_t size)
 {
-  sha512_feed(ctx, data, size);
+  sha512_process(ctx, data, size);
 }
 
 void sha384_finalize(sha384_ctx *ctx, uint8_t result[static 48U])
@@ -447,7 +447,7 @@ void sha512(const uint8_t *data, size_t size, uint8_t result[static 64U])
 {
   sha512_ctx ctx;
   sha512_init(&ctx);
-  sha512_feed(&ctx, data, size);
+  sha512_process(&ctx, data, size);
   sha512_finalize(&ctx, result);
 }
 
@@ -466,21 +466,21 @@ void sha512_init(sha512_ctx *ctx)
   ctx->h[7U] = 0x5be0cd19137e2179ULL;
 }
 
-void sha512_feed(sha512_ctx *ctx, const uint8_t *data, size_t size)
+void sha512_process(sha512_ctx *ctx, const uint8_t *data, size_t size)
 {
-  uint32_t length_to_feed;
+  uint32_t length_to_process;
   uint32_t data_idx = 0U;
 
   ctx->msg_len += size;
 
   while (size > 0U)
   {
-    length_to_feed = MIN(size, 128U - ctx->chunk_idx);
-    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], length_to_feed);
+    length_to_process = MIN(size, 128U - ctx->chunk_idx);
+    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], length_to_process);
 
-    size -= length_to_feed;
-    data_idx += length_to_feed;
-    ctx->chunk_idx += length_to_feed;
+    size -= length_to_process;
+    data_idx += length_to_process;
+    ctx->chunk_idx += length_to_process;
 
     if (ctx->chunk_idx == 128U)
     {
@@ -506,12 +506,12 @@ void sha512_finalize(sha512_ctx *ctx, uint8_t result[static 64U])
   };
 
   uint8_t one_bit_padding = 0x80U;
-  sha512_feed(ctx, &one_bit_padding, 1U);
+  sha512_process(ctx, &one_bit_padding, 1U);
 
   size_t padding_length = (ctx->chunk_idx > 112U) ? (112U + 128U - ctx->chunk_idx) : (112U - ctx->chunk_idx);
-  sha512_feed(ctx, zero_padding, padding_length);
+  sha512_process(ctx, zero_padding, padding_length);
 
-  sha512_feed(ctx, data_bit_length_be_bytes, sizeof data_bit_length_be_bytes);
+  sha512_process(ctx, data_bit_length_be_bytes, sizeof data_bit_length_be_bytes);
 
   PACK_U64_BE(result, 0U,  ctx->h[0U]);
   PACK_U64_BE(result, 8U,  ctx->h[1U]);
@@ -535,7 +535,7 @@ void sha512_224(const uint8_t *data, size_t size, uint8_t result[static 28U])
 {
   sha512_224_ctx ctx;
   sha512_224_init(&ctx);
-  sha512_224_feed(&ctx, data, size);
+  sha512_224_process(&ctx, data, size);
   sha512_224_finalize(&ctx, result);
 }
 
@@ -554,9 +554,9 @@ void sha512_224_init(sha512_224_ctx *ctx)
   ctx->h[7U] = 0x1112e6ad91d692a1ULL;
 }
 
-void sha512_224_feed(sha512_224_ctx *ctx, const uint8_t *data, size_t size)
+void sha512_224_process(sha512_224_ctx *ctx, const uint8_t *data, size_t size)
 {
-  sha512_feed(ctx, data, size);
+  sha512_process(ctx, data, size);
 }
 
 void sha512_224_finalize(sha512_224_ctx *ctx, uint8_t result[static 28U])
@@ -578,7 +578,7 @@ void sha512_256(const uint8_t *data, size_t size, uint8_t result[static 32U])
 {
   sha512_256_ctx ctx;
   sha512_256_init(&ctx);
-  sha512_256_feed(&ctx, data, size);
+  sha512_256_process(&ctx, data, size);
   sha512_256_finalize(&ctx, result);
 }
 
@@ -597,9 +597,9 @@ void sha512_256_init(sha512_256_ctx *ctx)
   ctx->h[7U] = 0x0eb72ddC81c52ca2ULL;
 }
 
-void sha512_256_feed(sha512_256_ctx *ctx, const uint8_t *data, size_t size)
+void sha512_256_process(sha512_256_ctx *ctx, const uint8_t *data, size_t size)
 {
-  sha512_feed(ctx, data, size);
+  sha512_process(ctx, data, size);
 }
 
 void sha512_256_finalize(sha512_256_ctx *ctx, uint8_t result[static 32U])
