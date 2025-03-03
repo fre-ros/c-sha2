@@ -228,20 +228,7 @@ static void sha5xx_process(sha512_ctx *ctx)
 
 static char nibble_to_hex_char(uint8_t nibble)
 {
-  switch (nibble)
-  {
-    case 0x0: return '0'; case 0x1: return '1';
-    case 0x2: return '2'; case 0x3: return '3';
-    case 0x4: return '4'; case 0x5: return '5';
-    case 0x6: return '6'; case 0x7: return '7';
-    case 0x8: return '8'; case 0x9: return '9';
-    case 0xa: return 'a'; case 0xb: return 'b';
-    case 0xc: return 'c'; case 0xd: return 'd';
-    case 0xe: return 'e'; case 0xf: return 'f';
-  }
-
-  // Should never get here as long as the caller only passes a nibble.
-  return '0';
+  return "0123456789abcdef"[nibble & 0xFU];
 }
 
 static char* hash_to_string(const uint8_t *hash, size_t size)
@@ -362,17 +349,6 @@ void sha256_process(sha256_ctx *ctx, const uint8_t *data, size_t size)
 void sha256_finalize(sha256_ctx *ctx, uint8_t result[static 32U])
 {
   uint64_t data_bit_length = ctx->msg_len * 8U;
-  uint8_t data_bit_length_be_bytes[8U] =
-  {
-    (data_bit_length >> 56U) & 0xFFU,
-    (data_bit_length >> 48U) & 0xFFU,
-    (data_bit_length >> 40U) & 0xFFU,
-    (data_bit_length >> 32U) & 0xFFU,
-    (data_bit_length >> 24U) & 0xFFU,
-    (data_bit_length >> 16U) & 0xFFU,
-    (data_bit_length >> 8U) & 0xFFU,
-    (data_bit_length >> 0U) & 0xFFU
-  };
 
   uint8_t one_bit_padding = 0x80U;
   sha256_process(ctx, &one_bit_padding, 1U);
@@ -380,6 +356,8 @@ void sha256_finalize(sha256_ctx *ctx, uint8_t result[static 32U])
   size_t padding_length = (ctx->chunk_idx > 56U) ? (56U + 64U - ctx->chunk_idx) : (56U - ctx->chunk_idx);
   sha256_process(ctx, zero_padding, padding_length);
 
+  uint8_t data_bit_length_be_bytes[8U];
+  PACK_U64_BE(data_bit_length_be_bytes, 0U, data_bit_length);
   sha256_process(ctx, data_bit_length_be_bytes, sizeof data_bit_length_be_bytes);
 
   PACK_U32_BE(result, 0U, ctx->h[0U]);
@@ -492,18 +470,6 @@ void sha512_process(sha512_ctx *ctx, const uint8_t *data, size_t size)
 void sha512_finalize(sha512_ctx *ctx, uint8_t result[static 64U])
 {
   uint64_t data_bit_length = ctx->msg_len * 8U;
-  uint8_t data_bit_length_be_bytes[16U] =
-  {
-    0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-    (data_bit_length >> 56U) & 0xFFU,
-    (data_bit_length >> 48U) & 0xFFU,
-    (data_bit_length >> 40U) & 0xFFU,
-    (data_bit_length >> 32U) & 0xFFU,
-    (data_bit_length >> 24U) & 0xFFU,
-    (data_bit_length >> 16U) & 0xFFU,
-    (data_bit_length >> 8U)  & 0xFFU,
-    (data_bit_length >> 0U)  & 0xFFU
-  };
 
   uint8_t one_bit_padding = 0x80U;
   sha512_process(ctx, &one_bit_padding, 1U);
@@ -511,6 +477,8 @@ void sha512_finalize(sha512_ctx *ctx, uint8_t result[static 64U])
   size_t padding_length = (ctx->chunk_idx > 112U) ? (112U + 128U - ctx->chunk_idx) : (112U - ctx->chunk_idx);
   sha512_process(ctx, zero_padding, padding_length);
 
+  uint8_t data_bit_length_be_bytes[16U] = {0U};
+  PACK_U64_BE(data_bit_length_be_bytes, 8U, data_bit_length);
   sha512_process(ctx, data_bit_length_be_bytes, sizeof data_bit_length_be_bytes);
 
   PACK_U64_BE(result, 0U,  ctx->h[0U]);
