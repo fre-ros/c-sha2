@@ -130,7 +130,7 @@ static void sha2xx_process(sha256_ctx *ctx)
   {
     uint32_t S1     = RROTATE32(e, 6U) ^ RROTATE32(e, 11U) ^ RROTATE32(e, 25U);
     uint32_t ch     = (e & f) ^ ((~e) & g);
-    uint32_t temp1  = h + S1 + ch + k2xx  [i] + w[i];
+    uint32_t temp1  = h + S1 + ch + k2xx[i] + w[i];
     uint32_t S0     = RROTATE32(a, 2U) ^ RROTATE32(a, 13U) ^ RROTATE32(a, 22U);
     uint32_t maj    = (a & b) ^ (a & c) ^ (b & c);
     uint32_t temp2  = (S0 + maj);
@@ -199,7 +199,7 @@ static void sha5xx_process(sha512_ctx *ctx)
   {
     uint64_t S1     = RROTATE64(e, 14U) ^ RROTATE64(e, 18U) ^ RROTATE64(e, 41U);
     uint64_t ch     = (e & f) ^ ((~e) & g);
-    uint64_t temp1  = h + S1 + ch + k5xx  [i] + w[i];
+    uint64_t temp1  = h + S1 + ch + k5xx[i] + w[i];
     uint64_t S0     = RROTATE64(a, 28U) ^ RROTATE64(a, 34U) ^ RROTATE64(a, 39U);
     uint64_t maj    = (a & b) ^ (a & c) ^ (b & c);
     uint64_t temp2  = (S0 + maj);
