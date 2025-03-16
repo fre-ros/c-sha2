@@ -325,8 +325,8 @@ void sha256_init(sha256_ctx *ctx)
 
 void sha256_process(sha256_ctx *ctx, const uint8_t *data, size_t size)
 {
-  uint32_t length_to_process;
-  uint32_t data_idx = 0U;
+  size_t length_to_process;
+  size_t data_idx = 0U;
 
   ctx->msg_len += size;
 
@@ -446,8 +446,8 @@ void sha512_init(sha512_ctx *ctx)
 
 void sha512_process(sha512_ctx *ctx, const uint8_t *data, size_t size)
 {
-  uint32_t length_to_process;
-  uint32_t data_idx = 0U;
+  size_t length_to_process;
+  size_t data_idx = 0U;
 
   ctx->msg_len += size;
 
