@@ -16,10 +16,10 @@
 
 #define PACK_U32_BE(arr, i, u32) do \
   { \
-    (arr)[(i)+0U] = ((u32) >> 24U) & 0xFFU; \
-    (arr)[(i)+1U] = ((u32) >> 16U) & 0xFFU; \
-    (arr)[(i)+2U] = ((u32) >> 8U)  & 0xFFU; \
-    (arr)[(i)+3U] = ((u32) >> 0U)  & 0xFFU; \
+    (arr)[(i)+0U] = (uint8_t)(((u32) >> 24U) & 0xFFU); \
+    (arr)[(i)+1U] = (uint8_t)(((u32) >> 16U) & 0xFFU); \
+    (arr)[(i)+2U] = (uint8_t)(((u32) >> 8U)  & 0xFFU); \
+    (arr)[(i)+3U] = (uint8_t)(((u32) >> 0U)  & 0xFFU); \
   } while (0)
 
 #define UNPACK_U64_BE(arr, i) (  \
@@ -34,14 +34,14 @@
 
 #define PACK_U64_BE(arr, i, u64) do \
   { \
-    (arr)[(i)+0U] = ((u64) >> 56U) & 0xFFU; \
-    (arr)[(i)+1U] = ((u64) >> 48U) & 0xFFU; \
-    (arr)[(i)+2U] = ((u64) >> 40U) & 0xFFU; \
-    (arr)[(i)+3U] = ((u64) >> 32U) & 0xFFU; \
-    (arr)[(i)+4U] = ((u64) >> 24U) & 0xFFU; \
-    (arr)[(i)+5U] = ((u64) >> 16U) & 0xFFU; \
-    (arr)[(i)+6U] = ((u64) >> 8U)  & 0xFFU; \
-    (arr)[(i)+7U] = ((u64) >> 0U)  & 0xFFU; \
+    (arr)[(i)+0U] = (uint8_t)(((u64) >> 56U) & 0xFFU); \
+    (arr)[(i)+1U] = (uint8_t)(((u64) >> 48U) & 0xFFU); \
+    (arr)[(i)+2U] = (uint8_t)(((u64) >> 40U) & 0xFFU); \
+    (arr)[(i)+3U] = (uint8_t)(((u64) >> 32U) & 0xFFU); \
+    (arr)[(i)+4U] = (uint8_t)(((u64) >> 24U) & 0xFFU); \
+    (arr)[(i)+5U] = (uint8_t)(((u64) >> 16U) & 0xFFU); \
+    (arr)[(i)+6U] = (uint8_t)(((u64) >> 8U)  & 0xFFU); \
+    (arr)[(i)+7U] = (uint8_t)(((u64) >> 0U)  & 0xFFU); \
   } while (0)
 
 static const uint8_t zero_padding[128U] = {0U};
