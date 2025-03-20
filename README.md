@@ -10,6 +10,7 @@
 ## Usage
 To use the library add `sha2.h` and `sha2.c` to your project.
 
+<br>**Example:**
 ```c
 #include <stdio.h>
 #include <stdint.h>
