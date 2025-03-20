@@ -231,23 +231,28 @@ static char nibble_to_hex_char(uint8_t nibble)
   return "0123456789abcdef"[nibble & 0xFU];
 }
 
+static void hash_to_string_buffer(const uint8_t *hash, size_t size, char *dst)
+{
+  size_t dst_index = 0U;
+
+  for (size_t i = 0U; i < size; i++)
+  {
+    dst[dst_index++] = nibble_to_hex_char(hash[i] >> 4U);
+    dst[dst_index++] = nibble_to_hex_char(hash[i] & 0xFU);
+  }
+
+  dst[dst_index] = '\0';
+}
+
 static char* hash_to_string(const uint8_t *hash, size_t size)
 {
-  size_t str_index = 0U;
-
   /* 2 hex characters for every uint8_t and NULL terminator. */
   size_t str_length = size * 2U + 1U;
-
   char *str = malloc(str_length * sizeof *str);
+
   if (str != NULL)
   {
-    for (size_t i = 0U; i < size; i++)
-    {
-      str[str_index++] = nibble_to_hex_char(hash[i] >> 4U);
-      str[str_index++] = nibble_to_hex_char(hash[i] & 0xFU);
-    }
-
-    str[str_index] = '\0';
+    hash_to_string_buffer(hash, size, str);
   }
 
   return str;
@@ -256,6 +261,15 @@ static char* hash_to_string(const uint8_t *hash, size_t size)
 /*************************
  *        SHA224
  ************************/
+void sha224(const uint8_t *data, size_t size, uint8_t result[static 28U])
+{
+  sha224_ctx ctx;
+
+  sha224_init(&ctx);
+  sha224_process(&ctx, data, size);
+  sha224_finalize(&ctx, result);
+}
+
 void sha224_init(sha224_ctx *ctx)
 {
   ctx->msg_len = 0U;
@@ -288,13 +302,9 @@ char* sha224_to_string(const uint8_t hash[static 28U])
   return hash_to_string(hash, 28U);
 }
 
-void sha224(const uint8_t *data, size_t size, uint8_t result[static 28U])
+void sha224_to_string_buffer(const uint8_t hash[static 28U], char dst[57U])
 {
-  sha224_ctx ctx;
-
-  sha224_init(&ctx);
-  sha224_process(&ctx, data, size);
-  sha224_finalize(&ctx, result);
+  hash_to_string_buffer(hash, 28U, dst);
 }
 
 /*************************
@@ -375,6 +385,11 @@ char* sha256_to_string(const uint8_t hash[static 32U])
   return hash_to_string(hash, 32U);
 }
 
+void sha256_to_string_buffer(const uint8_t hash[static 32U], char dst[65U])
+{
+  hash_to_string_buffer(hash, 32U, dst);
+}
+
 /*************************
  *        SHA384
  ************************/
@@ -416,6 +431,11 @@ void sha384_finalize(sha384_ctx *ctx, uint8_t result[static 48U])
 char* sha384_to_string(const uint8_t hash[static 48U])
 {
   return hash_to_string(hash, 48U);
+}
+
+void sha384_to_string_buffer(const uint8_t hash[static 48U], char dst[97U])
+{
+  hash_to_string_buffer(hash, 48U, dst);
 }
 
 /*************************
@@ -496,6 +516,11 @@ char* sha512_to_string(const uint8_t hash[static 64U])
   return hash_to_string(hash, 64U);
 }
 
+void sha512_to_string_buffer(const uint8_t hash[static 64U], char dst[129U])
+{
+  hash_to_string_buffer(hash, 64U, dst);
+}
+
 /*************************
  *      SHA512/224
  ************************/
@@ -537,6 +562,11 @@ void sha512_224_finalize(sha512_224_ctx *ctx, uint8_t result[static 28U])
 char* sha512_224_to_string(const uint8_t hash[static 28U])
 {
   return hash_to_string(hash, 28U);
+}
+
+void sha512_224_to_string_buffer(const uint8_t hash[static 28U], char dst[57U])
+{
+  hash_to_string_buffer(hash, 28U, dst);
 }
 
 /*************************
@@ -581,4 +611,9 @@ void sha512_256_finalize(sha512_256_ctx *ctx, uint8_t result[static 32U])
 char* sha512_256_to_string(const uint8_t hash[static 32U])
 {
   return hash_to_string(hash, 32U);
+}
+
+void sha512_256_to_string_buffer(const uint8_t hash[static 32U], char dst[65U])
+{
+  hash_to_string_buffer(hash, 32U, dst);
 }
