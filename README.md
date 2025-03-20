@@ -115,8 +115,6 @@ extern char* sha512_256_to_string(const uint8_t hash[static 32U]);
 
 ## Test
 The tests are run by calling make.
-<br>The implementation and test files are analyzed with [cppcheck](https://github.com/danmar/cppcheck) before compiling.
-<br>To skip [cppcheck](https://github.com/danmar/cppcheck) pass CPPCHECK=0 to make
 
 ```shell
 $ make
