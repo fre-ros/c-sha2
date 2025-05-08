@@ -261,7 +261,7 @@ static char* hash_to_str(const uint8_t *hash, size_t size)
 /*************************
  *        SHA224
  ************************/
-void sha224(const uint8_t *data, size_t size, uint8_t result[SHA224_HASH_LEN])
+void sha224(const uint8_t *data, size_t size, uint8_t result[static SHA224_HASH_LEN])
 {
   sha224_ctx ctx;
 
@@ -290,19 +290,19 @@ void sha224_process(sha224_ctx *ctx, const uint8_t *data, size_t size)
   sha256_process(ctx, data, size);
 }
 
-void sha224_finalize(sha224_ctx *ctx, uint8_t result[SHA224_HASH_LEN])
+void sha224_finalize(sha224_ctx *ctx, uint8_t result[static SHA224_HASH_LEN])
 {
   uint8_t hash[32U];
   sha256_finalize(ctx, hash);
   memcpy(result, hash, SHA224_HASH_LEN * sizeof *result);
 }
 
-char* sha224_to_str(const uint8_t hash[SHA224_HASH_LEN])
+char* sha224_to_str(const uint8_t hash[static SHA224_HASH_LEN])
 {
   return hash_to_str(hash, SHA224_HASH_LEN);
 }
 
-void sha224_to_str_buffer(const uint8_t hash[SHA224_HASH_LEN], char dst[SHA224_STR_LEN])
+void sha224_to_str_buffer(const uint8_t hash[static SHA224_HASH_LEN], char dst[static SHA224_STR_LEN])
 {
   hash_to_str_buffer(hash, SHA224_HASH_LEN, dst);
 }
@@ -385,7 +385,7 @@ char* sha256_to_str(const uint8_t hash[static SHA256_HASH_LEN])
   return hash_to_str(hash, SHA256_HASH_LEN);
 }
 
-void sha256_to_str_buffer(const uint8_t hash[static SHA256_HASH_LEN], char dst[SHA256_STR_LEN])
+void sha256_to_str_buffer(const uint8_t hash[static SHA256_HASH_LEN], char dst[static SHA256_STR_LEN])
 {
   hash_to_str_buffer(hash, SHA256_HASH_LEN, dst);
 }
@@ -433,7 +433,7 @@ char* sha384_to_str(const uint8_t hash[static SHA384_HASH_LEN])
   return hash_to_str(hash, SHA384_HASH_LEN);
 }
 
-void sha384_to_str_buffer(const uint8_t hash[static SHA384_HASH_LEN], char dst[SHA384_STR_LEN])
+void sha384_to_str_buffer(const uint8_t hash[static SHA384_HASH_LEN], char dst[static SHA384_STR_LEN])
 {
   hash_to_str_buffer(hash, SHA384_HASH_LEN, dst);
 }
@@ -516,7 +516,7 @@ char* sha512_to_str(const uint8_t hash[static SHA512_HASH_LEN])
   return hash_to_str(hash, SHA512_HASH_LEN);
 }
 
-void sha512_to_str_buffer(const uint8_t hash[static SHA512_HASH_LEN], char dst[SHA512_STR_LEN])
+void sha512_to_str_buffer(const uint8_t hash[static SHA512_HASH_LEN], char dst[static SHA512_STR_LEN])
 {
   hash_to_str_buffer(hash, SHA512_HASH_LEN, dst);
 }
@@ -564,7 +564,7 @@ char* sha512_224_to_str(const uint8_t hash[static SHA512_224_HASH_LEN])
   return hash_to_str(hash, SHA512_224_HASH_LEN);
 }
 
-void sha512_224_to_str_buffer(const uint8_t hash[static SHA512_224_HASH_LEN], char dst[SHA512_224_STR_LEN])
+void sha512_224_to_str_buffer(const uint8_t hash[static SHA512_224_HASH_LEN], char dst[static SHA512_224_STR_LEN])
 {
   hash_to_str_buffer(hash, SHA512_224_HASH_LEN, dst);
 }
@@ -613,7 +613,7 @@ char* sha512_256_to_str(const uint8_t hash[static SHA512_256_HASH_LEN])
   return hash_to_str(hash, SHA512_256_HASH_LEN);
 }
 
-void sha512_256_to_str_buffer(const uint8_t hash[static SHA512_256_HASH_LEN], char dst[SHA512_256_STR_LEN])
+void sha512_256_to_str_buffer(const uint8_t hash[static SHA512_256_HASH_LEN], char dst[static SHA512_256_STR_LEN])
 {
   hash_to_str_buffer(hash, SHA512_256_HASH_LEN, dst);
 }
