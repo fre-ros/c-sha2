@@ -42,7 +42,7 @@ int main(void)
   uint8_t hash[SHA256_HASH_LEN];
 
   // Calculate hash in one call
-  sha256((uint8_t*)msg, strlen(msg), hash);
+  sha256((const uint8_t*)msg, strlen(msg), hash);
   print_hash(hash);
 
   // Calculate hash with streaming protocol
@@ -51,8 +51,8 @@ int main(void)
 
   sha256_ctx ctx;
   sha256_init(&ctx);
-  sha256_process(&ctx, (uint8_t*)msg_part_one, strlen(msg_part_one));
-  sha256_process(&ctx, (uint8_t*)msg_part_two, strlen(msg_part_two));
+  sha256_process(&ctx, (const uint8_t*)msg_part_one, strlen(msg_part_one));
+  sha256_process(&ctx, (const uint8_t*)msg_part_two, strlen(msg_part_two));
   sha256_finalize(&ctx, hash);
   print_hash_without_allocation(hash);
 
