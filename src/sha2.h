@@ -22,8 +22,8 @@
  *    SHA2xx context
  ************************/
 typedef struct {
-  size_t msg_len;
   size_t chunk_idx;
+  uint64_t msg_len;
   uint32_t h[8U];
   uint8_t chunk[64U];
 } sha256_ctx;
@@ -34,8 +34,8 @@ typedef sha256_ctx sha224_ctx;
  *    SHA5xx context
  ************************/
 typedef struct {
-  size_t msg_len;
   size_t chunk_idx;
+  uint64_t msg_len;
   uint64_t h[8U];
   uint8_t chunk[128U];
 } sha512_ctx;
