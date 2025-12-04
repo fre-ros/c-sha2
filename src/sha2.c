@@ -403,7 +403,8 @@ void sha384(const uint8_t *data, size_t size, uint8_t result[static SHA384_HASH_
 
 void sha384_init(sha384_ctx *ctx)
 {
-  ctx->msg_len = 0U;
+  ctx->msg_len_low = 0U;
+  ctx->msg_len_high = 0U;
   ctx->chunk_idx = 0U;
 
   ctx->h[0U] = 0xcbbb9d5dc1059ed8ULL;
@@ -451,7 +452,8 @@ void sha512(const uint8_t *data, size_t size, uint8_t result[static SHA512_HASH_
 
 void sha512_init(sha512_ctx *ctx)
 {
-  ctx->msg_len = 0U;
+  ctx->msg_len_low = 0U;
+  ctx->msg_len_high = 0U;
   ctx->chunk_idx = 0U;
 
   ctx->h[0U] = 0x6a09e667f3bcc908ULL;
@@ -469,7 +471,9 @@ void sha512_process(sha512_ctx *ctx, const uint8_t *data, size_t size)
   size_t length_to_process;
   size_t data_idx = 0U;
 
-  ctx->msg_len += size;
+  /* Add the carry of the addition on ctx->msg_len_low. */
+  ctx->msg_len_high += ((UINT64_MAX - ctx->msg_len_low) < size) ? 1U : 0U;
+  ctx->msg_len_low += size;
 
   while (size > 0U)
   {
@@ -489,7 +493,9 @@ void sha512_process(sha512_ctx *ctx, const uint8_t *data, size_t size)
 
 void sha512_finalize(sha512_ctx *ctx, uint8_t result[static SHA512_HASH_LEN])
 {
-  uint64_t data_bit_length = ctx->msg_len * 8U;
+  /* Handle the multiplication with 8 of the 128 bit data length.  */
+  uint64_t data_bit_length_high = (ctx->msg_len_high << 3U) | (ctx->msg_len_low >> 61U);
+  uint64_t data_bit_length_low = (ctx->msg_len_low << 3U);
 
   uint8_t one_bit_padding = 0x80U;
   sha512_process(ctx, &one_bit_padding, 1U);
@@ -497,8 +503,9 @@ void sha512_finalize(sha512_ctx *ctx, uint8_t result[static SHA512_HASH_LEN])
   size_t padding_length = (ctx->chunk_idx > 112U) ? (112U + 128U - ctx->chunk_idx) : (112U - ctx->chunk_idx);
   sha512_process(ctx, zero_padding, padding_length);
 
-  uint8_t data_bit_length_be_bytes[16U] = {0U};
-  PACK_U64_BE(data_bit_length_be_bytes, 8U, data_bit_length);
+  uint8_t data_bit_length_be_bytes[16U];
+  PACK_U64_BE(data_bit_length_be_bytes, 0U, data_bit_length_high);
+  PACK_U64_BE(data_bit_length_be_bytes, 8U, data_bit_length_low);
   sha512_process(ctx, data_bit_length_be_bytes, sizeof data_bit_length_be_bytes);
 
   PACK_U64_BE(result, 0U,  ctx->h[0U]);
@@ -534,7 +541,8 @@ void sha512_224(const uint8_t *data, size_t size, uint8_t result[static SHA512_2
 
 void sha512_224_init(sha512_224_ctx *ctx)
 {
-  ctx->msg_len = 0U;
+  ctx->msg_len_low = 0U;
+  ctx->msg_len_high = 0U;
   ctx->chunk_idx = 0U;
 
   ctx->h[0U] = 0x8c3d37c819544da2ULL;
@@ -582,7 +590,8 @@ void sha512_256(const uint8_t *data, size_t size, uint8_t result[static SHA512_2
 
 void sha512_256_init(sha512_256_ctx *ctx)
 {
-  ctx->msg_len = 0U;
+  ctx->msg_len_low = 0U;
+  ctx->msg_len_high = 0U;
   ctx->chunk_idx = 0U;
 
   ctx->h[0U] = 0x22312194fc2bf72cULL;

@@ -35,7 +35,8 @@ typedef sha256_ctx sha224_ctx;
  ************************/
 typedef struct {
   size_t chunk_idx;
-  uint64_t msg_len;
+  uint64_t msg_len_low;
+  uint64_t msg_len_high;
   uint64_t h[8U];
   uint8_t chunk[128U];
 } sha512_ctx;
