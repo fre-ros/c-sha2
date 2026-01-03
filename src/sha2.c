@@ -562,8 +562,8 @@ void sha512_224_process(sha512_224_ctx *ctx, const uint8_t *data, size_t size)
 
 void sha512_224_finalize(sha512_224_ctx *ctx, uint8_t result[static SHA512_224_HASH_LEN])
 {
-  uint8_t hash[32U];
-  sha512_256_finalize(ctx, hash);
+  uint8_t hash[64U];
+  sha512_finalize(ctx, hash);
   memcpy(result, hash, SHA512_224_HASH_LEN * sizeof *result);
 }
 
