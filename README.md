@@ -65,8 +65,6 @@ int main(void)
 ```
 
 ## API
-The strings returned from **xxx_to_str** functions must be freed by the caller.
-<br>Use **xxx_to_str_buffer** to create a string without allocation.
 ```c
 /*************************
  *        SHA224
