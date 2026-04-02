@@ -114,7 +114,7 @@ typedef sha512_ctx sha512_256_ctx;
  ************************/
 
 /**
- * @brief Compute SHA-224 digest for a complete buffer.
+ * Compute SHA-224 digest for a complete buffer.
  *
  * @param[in]   data    Input data buffer.
  * @param[in]   size    Input size in bytes.
@@ -164,7 +164,7 @@ extern void sha224_finalize(sha224_ctx *ctx, uint8_t result[static SHA224_HASH_L
  *
  * @param[in]  hash  The SHA-224 hash to create a string for, has to be at least SHA224_HASH_LEN in size.
  *
- * @return     Resulting string on success, otherwise NULL.
+ * @return     Resulting string on success, otherwise NULL. Must be freed by the caller.
  */
 extern char* sha224_to_str(const uint8_t hash[static SHA224_HASH_LEN]);
 
@@ -184,7 +184,7 @@ extern void sha224_to_str_buffer(const uint8_t hash[static SHA224_HASH_LEN], cha
  ************************/
 
 /**
- * @brief Compute SHA-256 digest for a complete buffer.
+ * Compute SHA-256 digest for a complete buffer.
  *
  * @param[in]   data    Input data buffer.
  * @param[in]   size    Input size in bytes.
@@ -234,7 +234,7 @@ extern void sha256_finalize(sha256_ctx *ctx, uint8_t result[static SHA256_HASH_L
  *
  * @param[in]  hash  The SHA-256 hash to create a string for, has to be at least SHA256_HASH_LEN in size.
  *
- * @return     Resulting string on success, otherwise NULL.
+ * @return     Resulting string on success, otherwise NULL. Must be freed by the caller.
  */
 extern char* sha256_to_str(const uint8_t hash[static SHA256_HASH_LEN]);
 
@@ -254,7 +254,7 @@ extern void sha256_to_str_buffer(const uint8_t hash[static SHA256_HASH_LEN], cha
  ************************/
 
 /**
- * @brief Compute SHA-384 digest for a complete buffer.
+ * Compute SHA-384 digest for a complete buffer.
  *
  * @param[in]   data    Input data buffer.
  * @param[in]   size    Input size in bytes.
@@ -304,7 +304,7 @@ extern void sha384_finalize(sha384_ctx *ctx, uint8_t result[static SHA384_HASH_L
  *
  * @param[in]  hash  The SHA-384 hash to create a string for, has to be at least SHA384_HASH_LEN in size.
  *
- * @return     Resulting string on success, otherwise NULL.
+ * @return     Resulting string on success, otherwise NULL. Must be freed by the caller.
  */
 extern char* sha384_to_str(const uint8_t hash[static SHA384_HASH_LEN]);
 
@@ -324,7 +324,7 @@ extern void sha384_to_str_buffer(const uint8_t hash[static SHA384_HASH_LEN], cha
  ************************/
 
 /**
- * @brief Compute SHA-512 digest for a complete buffer.
+ * Compute SHA-512 digest for a complete buffer.
  *
  * @param[in]   data    Input data buffer.
  * @param[in]   size    Input size in bytes.
@@ -374,7 +374,7 @@ extern void sha512_finalize(sha512_ctx *ctx, uint8_t result[static SHA512_HASH_L
  *
  * @param[in]  hash  The SHA-512 hash to create a string for, has to be at least SHA512_HASH_LEN in size.
  *
- * @return     Resulting string on success, otherwise NULL.
+ * @return     Resulting string on success, otherwise NULL. Must be freed by the caller.
  */
 extern char* sha512_to_str(const uint8_t hash[static SHA512_HASH_LEN]);
 
@@ -394,7 +394,7 @@ extern void sha512_to_str_buffer(const uint8_t hash[static SHA512_HASH_LEN], cha
  ************************/
 
 /**
- * @brief Compute SHA-512/224 digest for a complete buffer.
+ * Compute SHA-512/224 digest for a complete buffer.
  *
  * @param[in]   data    Input data buffer.
  * @param[in]   size    Input size in bytes.
@@ -444,7 +444,7 @@ extern void sha512_224_finalize(sha512_224_ctx *ctx, uint8_t result[static SHA51
  *
  * @param[in]  hash  The SHA-512/224 hash to create a string for, has to be at least SHA512_224_HASH_LEN in size.
  *
- * @return     Resulting string on success, otherwise NULL.
+ * @return     Resulting string on success, otherwise NULL. Must be freed by the caller.
  */
 extern char* sha512_224_to_str(const uint8_t hash[static SHA512_224_HASH_LEN]);
 
@@ -464,7 +464,7 @@ extern void sha512_224_to_str_buffer(const uint8_t hash[static SHA512_224_HASH_L
  ************************/
 
 /**
- * @brief Compute SHA-512/256 digest for a complete buffer.
+ * Compute SHA-512/256 digest for a complete buffer.
  *
  * @param[in]   data    Input data buffer.
  * @param[in]   size    Input size in bytes.
@@ -514,7 +514,7 @@ extern void sha512_256_finalize(sha512_256_ctx *ctx, uint8_t result[static SHA51
  *
  * @param[in]  hash  The SHA-512/256 hash to create a string for, has to be at least SHA512_256_HASH_LEN in size.
  *
- * @return     Resulting string on success, otherwise NULL.
+ * @return     Resulting string on success, otherwise NULL. Must be freed by the caller.
  */
 extern char* sha512_256_to_str(const uint8_t hash[static SHA512_256_HASH_LEN]);
 
