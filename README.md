@@ -491,7 +491,8 @@ extern void sha512_256_to_str_buffer(const uint8_t hash[static SHA512_256_HASH_L
 ```
 
 ## Test
-The tests are run by calling make.
+The test checks all [NIST CAVP](https://csrc.nist.gov/Projects/Cryptographic-Algorithm-Validation-Program/Secure-Hashing) test vectors against the implementation.
+The tests can be run by calling make.
 
 ```shell
 $ make
