@@ -130,7 +130,7 @@ extern char* sha224_to_str(const uint8_t hash[static SHA224_HASH_LEN]);
 /**
  * Creates a string with the hexadecimal representation of the passed SHA-224 hash.
  *
- * This function will place the resulting string in the passed char buffer, no allocations will be made.
+ * The resulting string will be placed in the passed char buffer, no allocations will be made.
  * The resulting string will be in lowercase.
  *
  * @param[in]   hash  The SHA-224 hash to create a string for, has to be at least SHA224_HASH_LEN in size.
@@ -200,7 +200,7 @@ extern char* sha256_to_str(const uint8_t hash[static SHA256_HASH_LEN]);
 /**
  * Creates a string with the hexadecimal representation of the passed SHA-256 hash.
  *
- * This function will place the resulting string in the passed char buffer, no allocations will be made.
+ * The resulting string will be placed in the passed char buffer, no allocations will be made.
  * The resulting string will be in lowercase.
  *
  * @param[in]   hash  The SHA-256 hash to create a string for, has to be at least SHA256_HASH_LEN in size.
@@ -270,7 +270,7 @@ extern char* sha384_to_str(const uint8_t hash[static SHA384_HASH_LEN]);
 /**
  * Creates a string with the hexadecimal representation of the passed SHA-384 hash.
  *
- * This function will place the resulting string in the passed char buffer, no allocations will be made.
+ * The resulting string will be placed in the passed char buffer, no allocations will be made.
  * The resulting string will be in lowercase.
  *
  * @param[in]   hash  The SHA-384 hash to create a string for, has to be at least SHA384_HASH_LEN in size.
@@ -340,7 +340,7 @@ extern char* sha512_to_str(const uint8_t hash[static SHA512_HASH_LEN]);
 /**
  * Creates a string with the hexadecimal representation of the passed SHA-512 hash.
  *
- * This function will place the resulting string in the passed char buffer, no allocations will be made.
+ * The resulting string will be placed in the passed char buffer, no allocations will be made.
  * The resulting string will be in lowercase.
  *
  * @param[in]   hash  The SHA-512 hash to create a string for, has to be at least SHA512_HASH_LEN in size.
@@ -410,7 +410,7 @@ extern char* sha512_224_to_str(const uint8_t hash[static SHA512_224_HASH_LEN]);
 /**
  * Creates a string with the hexadecimal representation of the passed SHA-512/224 hash.
  *
- * This function will place the resulting string in the passed char buffer, no allocations will be made.
+ * The resulting string will be placed in the passed char buffer, no allocations will be made.
  * The resulting string will be in lowercase.
  *
  * @param[in]   hash  The SHA-512/224 hash to create a string for, has to be at least SHA512_224_HASH_LEN in size.
@@ -480,7 +480,7 @@ extern char* sha512_256_to_str(const uint8_t hash[static SHA512_256_HASH_LEN]);
 /**
  * Creates a string with the hexadecimal representation of the passed SHA-512/256 hash.
  *
- * This function will place the resulting string in the passed char buffer, no allocations will be made.
+ * The resulting string will be placed in the passed char buffer, no allocations will be made.
  * The resulting string will be in lowercase.
  *
  * @param[in]   hash  The SHA-512/256 hash to create a string for, has to be at least SHA512_256_HASH_LEN in size.
