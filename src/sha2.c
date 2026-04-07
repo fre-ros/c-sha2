@@ -336,17 +336,16 @@ void sha256_init(sha256_ctx *ctx)
 void sha256_process(sha256_ctx *ctx, const uint8_t *data, size_t size)
 {
   size_t length_to_process;
-  size_t data_idx = 0U;
 
   ctx->msg_len += size;
 
   while (size > 0U)
   {
     length_to_process = MIN(size, 64U - ctx->chunk_idx);
-    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], length_to_process);
+    memcpy(&ctx->chunk[ctx->chunk_idx], data, length_to_process);
 
     size -= length_to_process;
-    data_idx += length_to_process;
+    data += length_to_process;
     ctx->chunk_idx += length_to_process;
 
     if (ctx->chunk_idx == 64U)
@@ -469,7 +468,6 @@ void sha512_init(sha512_ctx *ctx)
 void sha512_process(sha512_ctx *ctx, const uint8_t *data, size_t size)
 {
   size_t length_to_process;
-  size_t data_idx = 0U;
 
   /* Add the carry of the addition on ctx->msg_len_low. */
   ctx->msg_len_high += ((UINT64_MAX - ctx->msg_len_low) < size) ? 1U : 0U;
@@ -478,10 +476,10 @@ void sha512_process(sha512_ctx *ctx, const uint8_t *data, size_t size)
   while (size > 0U)
   {
     length_to_process = MIN(size, 128U - ctx->chunk_idx);
-    memcpy(&ctx->chunk[ctx->chunk_idx], &data[data_idx], length_to_process);
+    memcpy(&ctx->chunk[ctx->chunk_idx], data, length_to_process);
 
     size -= length_to_process;
-    data_idx += length_to_process;
+    data += length_to_process;
     ctx->chunk_idx += length_to_process;
 
     if (ctx->chunk_idx == 128U)
