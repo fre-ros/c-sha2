@@ -292,7 +292,7 @@ void sha224_process(sha224_ctx *ctx, const uint8_t *data, size_t size)
 
 void sha224_finalize(sha224_ctx *ctx, uint8_t result[static SHA224_HASH_LEN])
 {
-  uint8_t hash[32U];
+  uint8_t hash[SHA256_HASH_LEN];
   sha256_finalize(ctx, hash);
   memcpy(result, hash, SHA224_HASH_LEN * sizeof *result);
 }
@@ -423,7 +423,7 @@ void sha384_process(sha384_ctx *ctx, const uint8_t *data, size_t size)
 
 void sha384_finalize(sha384_ctx *ctx, uint8_t result[static SHA384_HASH_LEN])
 {
-  uint8_t hash[64U];
+  uint8_t hash[SHA512_HASH_LEN];
   sha512_finalize(ctx, hash);
   memcpy(result, hash, SHA384_HASH_LEN * sizeof *result);
 }
@@ -560,7 +560,7 @@ void sha512_224_process(sha512_224_ctx *ctx, const uint8_t *data, size_t size)
 
 void sha512_224_finalize(sha512_224_ctx *ctx, uint8_t result[static SHA512_224_HASH_LEN])
 {
-  uint8_t hash[64U];
+  uint8_t hash[SHA512_HASH_LEN];
   sha512_finalize(ctx, hash);
   memcpy(result, hash, SHA512_224_HASH_LEN * sizeof *result);
 }
@@ -609,7 +609,7 @@ void sha512_256_process(sha512_256_ctx *ctx, const uint8_t *data, size_t size)
 
 void sha512_256_finalize(sha512_256_ctx *ctx, uint8_t result[static SHA512_256_HASH_LEN])
 {
-  uint8_t hash[64U];
+  uint8_t hash[SHA512_HASH_LEN];
   sha512_finalize(ctx, hash);
 
   memcpy(result, hash, SHA512_256_HASH_LEN * sizeof *result);
