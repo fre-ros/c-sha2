@@ -188,7 +188,7 @@ extern void sha224_to_str_buffer(const uint8_t hash[static SHA224_HASH_LEN], cha
  *
  * @param[in]   data    Input data buffer.
  * @param[in]   size    Input size in bytes.
- * @param[out]  result  Output digest buffer, has to be at least SHA56_HASH_LEN in size.
+ * @param[out]  result  Output digest buffer, has to be at least SHA256_HASH_LEN in size.
  */
 extern void sha256(const uint8_t *data, size_t size, uint8_t result[static SHA256_HASH_LEN]);
 
