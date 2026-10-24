@@ -19,8 +19,8 @@ static char hash_string[SHA512_STR_LEN];
 
 #define SHAXXX_STREAMING_ONE_CALL_TEST(test, ctx_type, hash_type, init_func, process_func, finalize_func, to_str_func) do \
   { \
-    hash_type hash[SHA512_HASH_LEN]; \
     ctx_type ctx; \
+    hash_type hash[SHA512_HASH_LEN]; \
     init_func(&ctx); \
     process_func(&ctx, test.msg, test.msg_length); \
     finalize_func(&ctx, hash); \
@@ -30,16 +30,31 @@ static char hash_string[SHA512_STR_LEN];
 
 #define SHAXXX_STREAMING_TEST(test, ctx_type, hash_type, init_func, process_func, finalize_func, to_str_func) do \
   { \
-    hash_type hash[SHA512_HASH_LEN]; \
     ctx_type ctx; \
-    init_func(&ctx); \
-    for (size_t msg_i = 0; msg_i < test.msg_length; msg_i++) \
+    size_t data_left; \
+    size_t chunk_size; \
+    size_t len_to_process; \
+    hash_type hash[SHA512_HASH_LEN]; \
+    size_t chunk_sizes[] = { \
+      1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U, \
+      60U, 61U, 62U, 63U, 64U, 65U, 66U, 67U, 68U, 69U, \
+      120U, 121U, 122U, 123U, 124U, 125U, 126U, 127U, 128U, 129U, 130U, 131U, 132U, 133U, 134U \
+    }; \
+    for (size_t chunk_size_idx = 0U; chunk_size_idx < (sizeof chunk_sizes / sizeof chunk_sizes[0U]); chunk_size_idx++ ) \
     { \
-      process_func(&ctx, &test.msg[msg_i], 1); \
+      chunk_size = chunk_sizes[chunk_size_idx]; \
+      init_func(&ctx); \
+      data_left = test.msg_length; \
+      while (data_left > 0U) \
+      { \
+        len_to_process = (data_left >= chunk_size) ? chunk_size : data_left; \
+        process_func(&ctx, &test.msg[test.msg_length - data_left], len_to_process); \
+        data_left -= len_to_process; \
+      } \
+      finalize_func(&ctx, hash); \
+      to_str_func(hash, hash_string); \
+      assert(strcmp(hash_string, test.expected_hash) == 0); \
     } \
-    finalize_func(&ctx, hash); \
-    to_str_func(hash, hash_string); \
-    assert(strcmp(hash_string, test.expected_hash) == 0); \
   } while(0)
 
 static void run_sha224_tests(struct test_data *test_data, size_t number_of_tests, const char *test_name)
